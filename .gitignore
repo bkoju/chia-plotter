@@ -4,3 +4,4 @@
 /lib/FSE/Visual/VC2012
 /out/build/x64-Debug
 /.vs
+/CMakeSettings.json
