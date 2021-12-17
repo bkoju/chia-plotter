@@ -94,6 +94,7 @@ phase4::output_t create_plot(	const int k,
 	const auto total_begin = get_wall_time_micros();
 	const bool have_puzzle = !puzzle_hash_bytes.empty();
 	
+	std::cout << get_timestamp() << std::endl;
 	std::cout << "Process ID: " << GETPID() << std::endl;
 	std::cout << "Number of Threads: " << num_threads << std::endl;
 	std::cout << "Number of Buckets P1:    2^" << log_num_buckets
@@ -199,7 +200,7 @@ phase4::output_t create_plot(	const int k,
 	phase4::compute(out_3, out_4, num_threads, log_num_buckets_3, plot_name, tmp_dir, tmp_dir_2, plot_dir);
 	
 	const auto time_secs = (get_wall_time_micros() - total_begin) / 1e6;
-	std::cout << "Total plot creation time was "
+	std::cout << get_timestamp() << "Total plot creation time was "
 			<< time_secs << " sec (" << time_secs / 60. << " min)" << std::endl;
 	return out_4;
 }
@@ -312,7 +313,7 @@ int main(int argc, char** argv)
 	if(contract_addr_str.empty()) {
 		pool_key = hex_to_bytes(pool_key_str);
 		if(pool_key.size() != bls::G1Element::SIZE) {
-			std::cout << "Invalid poolkey: " << bls::Util::HexStr(pool_key) << ", '" << pool_key_str
+			std::cout << get_timestamp() << "Invalid poolkey: " << bls::Util::HexStr(pool_key) << ", '" << pool_key_str
 				<< "' (needs to be " << bls::G1Element::SIZE << " bytes, see `chia keys show`)" << std::endl;
 			return -2;
 		}
@@ -412,7 +413,7 @@ int main(int argc, char** argv)
 			if(auto file = fopen(path.c_str(), "wb")) {
 				files.emplace_back(file, path);
 			} else {
-				std::cout << "Cannot open at least " << num_files_max
+				std::cout << get_timestamp() << "Cannot open at least " << num_files_max
 						<< " files, please raise maximum open file limit in OS." << std::endl;
 				return -2;
 			}
@@ -469,14 +470,14 @@ int main(int argc, char** argv)
 					
 					const auto time = (get_wall_time_micros() - total_begin) / 1e6;
 					if(time > 1) {
-						std::cout << "Copy to " << from_to.second << " finished, took " << time << " sec, "
+						std::cout << get_timestamp() << "Copy to " << from_to.second << " finished, took " << time << " sec, "
 							<< ((bytes / time) / 1024 / 1024) << " MB/s avg." << std::endl;
 					} else {
-						std::cout << "Renamed final plot to " << from_to.second << std::endl;
+						std::cout << get_timestamp() << "Renamed final plot to " << from_to.second << std::endl;
 					}
 					break;
 				} catch(const std::exception& ex) {
-					std::cout << "Copy to " << from_to.second << " failed with: " << ex.what() << std::endl;
+					std::cout << get_timestamp() << "Copy to " << from_to.second << " failed with: " << ex.what() << std::endl;
 					std::this_thread::sleep_for(std::chrono::minutes(5));
 				}
 			}
@@ -485,10 +486,10 @@ int main(int argc, char** argv)
 	for(int i = 0; i < num_plots || num_plots < 0; ++i)
 	{
 		if (gracefully_exit) {
-			std::cout << std::endl << "Process has been interrupted, waiting for copy/rename operations to finish ..." << std::endl;
+			std::cout << std::endl << get_timestamp() << "Process has been interrupted, waiting for copy/rename operations to finish ..." << std::endl;
 			break;
 		}
-		std::cout << "Crafting plot " << i+1 << " out of " << num_plots
+		std::cout << get_timestamp() << "Crafting plot " << i+1 << " out of " << num_plots
 				<< " (" << get_date_string_ex("%Y/%m/%d %H:%M:%S") << ")" << std::endl;
 		const auto out = create_plot(
 				k, port, num_threads, log_num_buckets, log_num_buckets_3,
@@ -498,7 +499,7 @@ int main(int argc, char** argv)
 		{
 			if(!directout) {
 				const auto dst_path = final_dir + out.params.plot_name + ".plot";
-				std::cout << "Started copy to " << dst_path << std::endl;
+				std::cout << get_timestamp() << "Started copy to " << dst_path << std::endl;
 				copy_thread.take_copy(std::make_pair(out.plot_file_name, dst_path));
 				if(waitforcopy) {
 					copy_thread.wait();

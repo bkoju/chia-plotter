@@ -411,6 +411,12 @@ std::string get_date_string_ex(const char* format, bool UTC = false, int64_t tim
 }
 
 inline
+std::string get_timestamp() {
+    return get_date_string_ex("%Y/%m/%d %H:%M:%S: ");
+}
+
+
+inline
 std::ifstream::pos_type get_file_size(const char* file_name)
 {
 	std::ifstream in(file_name, std::ifstream::ate | std::ifstream::binary);

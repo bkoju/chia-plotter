@@ -78,7 +78,7 @@ uint64_t compute(	FILE* plot_file,
     
     std::vector<uintkx_t> C2;
 
-    std::cout << "[P4] Starting to write C1 and C3 tables" << std::endl;
+    std::cout << get_timestamp() << "[P4] Starting to write C1 and C3 tables" << std::endl;
     
 	struct park_deltas_t {
 		uint64_t offset = 0;
@@ -214,8 +214,8 @@ uint64_t compute(	FILE* plot_file,
     final_file_writer_1 +=
     		fwrite_at(plot_file, final_file_writer_1, C1_entry_buf, Util::ByteAlign(k) / 8);
     
-    std::cout << "[P4] Finished writing C1 and C3 tables" << std::endl;
-    std::cout << "[P4] Writing C2 table" << std::endl;
+    std::cout << get_timestamp() << "[P4] Finished writing C1 and C3 tables" << std::endl;
+    std::cout << get_timestamp() << "[P4] Writing C2 table" << std::endl;
 
     for(auto C2_entry : C2) {
         Bits(C2_entry, k).ToBytes(C1_entry_buf);
@@ -226,7 +226,7 @@ uint64_t compute(	FILE* plot_file,
     final_file_writer_1 +=
     		fwrite_at(plot_file, final_file_writer_1, C1_entry_buf, Util::ByteAlign(k) / 8);
     
-    std::cout << "[P4] Finished writing C2 table" << std::endl;
+    std::cout << get_timestamp() << "[P4] Finished writing C2 table" << std::endl;
 
     final_file_writer_1 = header_size - 8 * 3;
     uint8_t table_pointer_bytes[8] = {};
@@ -265,7 +265,7 @@ void compute(	const phase3::output_t& input, output_t& out,
 	
 	std::rename(input.plot_file_name.c_str(), out.plot_file_name.c_str());
 	
-	std::cout << "Phase 4 took " << (get_wall_time_micros() - total_begin) / 1e6 << " sec"
+	std::cout << get_timestamp() << "Phase 4 took " << (get_wall_time_micros() - total_begin) / 1e6 << " sec"
 			", final plot size is " << out.plot_size << " bytes" << std::endl;
 }
 

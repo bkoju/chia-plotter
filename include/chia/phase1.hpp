@@ -292,7 +292,7 @@ void compute_f1(const uint8_t* id, int k, int num_threads, DS* T1_sort)
 	output.close();
 	T1_sort->finish();
 	
-	std::cout << "[P1] Table 1 took " << (get_wall_time_micros() - begin) / 1e6 << " sec" << std::endl;
+	std::cout << get_timestamp() << "[P1] Table 1 took " << (get_wall_time_micros() - begin) / 1e6 << " sec" << std::endl;
 }
 
 template<typename T, typename S, typename R, typename DS_L, typename DS_R>
@@ -454,7 +454,7 @@ uint64_t compute_table(	int R_index, int k, int num_threads,
 	if(R_tmp) {
 		R_tmp->close();
 	}
-	std::cout << "[P1] Table " << R_index << " took " << (get_wall_time_micros() - begin) / 1e6 << " sec"
+	std::cout << get_timestamp() << "[P1] Table " << R_index << " took " << (get_wall_time_micros() - begin) / 1e6 << " sec"
 			<< ", found " << num_matches << " matches" << std::endl;
 	return num_matches;
 }
@@ -516,7 +516,7 @@ void compute(	const input_t& input, output_t& out,
 	out.table[5] = tmp_6.get_info();
 	out.table[6] = tmp_7.get_info();
 	
-	std::cout << "Phase 1 took " << (get_wall_time_micros() - total_begin) / 1e6 << " sec" << std::endl;
+	std::cout << get_timestamp() << "Phase 1 took " << (get_wall_time_micros() - total_begin) / 1e6 << " sec" << std::endl;
 }
 
 
